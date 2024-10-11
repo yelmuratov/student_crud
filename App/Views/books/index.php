@@ -5,6 +5,7 @@
     
     $sql = "
     SELECT 
+        books.id AS book_id,
         books.title AS book_title,
         books.description AS book_description,
         authors.name AS author_name,
@@ -18,10 +19,8 @@
 ";
 
     $books = Book::query($sql);
-
-    echo "<pre>";
-    print_r($books);
-    echo "</pre>";
+    $authors = Author::getAll();
+    $genres = Genre::getAll();
 
 ?>
 
@@ -61,44 +60,8 @@
     </nav>
 
     <div class="container my-5">
-        <h2 class="text-center mb-4">Books CRUD</h2>
-
-        <!-- Add Book Form -->
-        <form>
-            <div class="mb-3">
-                <label for="bookTitle" class="form-label">Book Title</label>
-                <input type="text" class="form-control" id="bookTitle">
-            </div>
-            <div class="mb-3">
-                <label for="bookDescription" class="form-label">Description</label>
-                <textarea class="form-control" id="bookDescription"></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="bookText" class="form-label">Text</label>
-                <textarea class="form-control" id="bookText"></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="bookImg" class="form-label">Image</label>
-                <input type="file" class="form-control" id="bookImg">
-            </div>
-            <div class="mb-3">
-                <label for="bookGenre" class="form-label">Genre</label>
-                <select class="form-select" id="bookGenre">
-                    <option selected>Select Genre</option>
-                    <!-- Add genres dynamically -->
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="bookAuthor" class="form-label">Author</label>
-                <select class="form-select" id="bookAuthor">
-                    <option selected>Select Author</option>
-                    <!-- Add authors dynamically -->
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Add Book</button>
-        </form>
-
         <!-- Book List with Edit/Delete -->
+        <a href="/book_create" class='btn btn-primary'>Add Book</a>
         <div class="mt-5">
             <h3>Books List</h3>
             <table class="table table-bordered">
@@ -114,13 +77,13 @@
                 <tbody>
                     <?php foreach($books as $book): ?>
                         <tr>
-                            <td><?= $book['title'] ?></td>
-                            <td><?= $book['description'] ?></td>
-                            <td><?= $book['text'] ?></td>
-                            <td><?= $book['author_id'] ?></td>
+                            <td><?= $book['book_title'] ?></td>
+                            <td><?= $book['book_description'] ?></td>
+                            <td><?= $book['author_name'] ?></td>
+                            <td><?= $book['genre_name'] ?></td>
                             <td>
-                                <a href="/books/edit?id=<?= $book['id'] ?>" class="btn btn-primary">Edit</a>
-                                <a href="/books/delete?id=<?= $book['id'] ?>" class="btn btn-danger">Delete</a>
+                                <a href="/book_edit?id=<?= $book['book_id'] ?>" class="btn btn-primary">Edit</a>
+                                <a href="/delete_book?id=<?= $book['book_id'] ?>" class="btn btn-danger">Delete</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>

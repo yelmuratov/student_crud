@@ -1,3 +1,28 @@
+<?php
+    use App\Models\Author\Author;
+
+    $authors = Author::getAll();
+
+    //count the number of books for each author
+    $sql = "
+        SELECT 
+            authors.id AS author_id,
+            authors.name AS author_name,
+            COUNT(books.id) AS book_count
+        FROM 
+            authors
+        LEFT JOIN 
+            books ON authors.id = books.author_id
+        GROUP BY 
+            authors.id
+    ";
+
+    $authors = Author::query($sql);
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,20 +59,27 @@
 
     <div class="container my-5">
         <h2 class="text-center mb-4">Authors and their Books</h2>
-        
+        <!-- Add author -->
+        <a href="/author_create" class='btn btn-primary mb-4'>Add Author</a>
         <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>Author</th>
                     <th>Number of Books</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- List authors dynamically -->
-                <tr>
-                    <td>Author Name</td>
-                    <td>5</td>
-                </tr>
+                <?php foreach($authors as $author): ?>
+                    <tr>
+                        <td><?= $author['author_name'] ?></td>
+                        <td><?= $author['book_count'] ?></td>
+                        <td>
+                            <a href="/author_edit?id=<?= $author['author_id'] ?>" class='btn btn-warning'>Edit</a>
+                            <a href="/delete_author?id=<?= $author['author_id'] ?>" class='btn btn-danger'>Delete</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
             </tbody>
         </table>
     </div>

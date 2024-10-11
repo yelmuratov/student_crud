@@ -3,6 +3,7 @@ namespace App\Controllers;
 
 use App\Models\Author\Author;
 use App\Models\Book\Book;
+use App\Models\Genre\Genre;
 
 define('VIEW_PATH', realpath(__DIR__ . '/../Views/'));
 
@@ -53,6 +54,12 @@ class CategoryController extends BaseController {
             ];
 
             Author::update($_GET['id'], $data);
+            ?>
+            <script>
+                alert('Author updated successfully');
+                window.location.href = '/authors';
+            </script>
+            <?php
         }
     }
 
@@ -77,7 +84,7 @@ class CategoryController extends BaseController {
     }
 
     public function save_book() {
-        if(isset($_POST['title']) && isset($_POST['description']) && isset($_POST['text']) && isset($_POST['author_id']) && isset($_FILES['img']) && isset($_POST['genre_id'])) {
+        if(isset($_POST['title']) && isset($_POST['description']) && isset($_POST['text']) && isset($_POST['author_id']) && !empty($_FILES['img']) && isset($_POST['genre_id'])) {
             $img = $_FILES['img'];
             $imgName = $img['name'];
             $imgTmp = $img['tmp_name'];
@@ -106,28 +113,98 @@ class CategoryController extends BaseController {
                         $_SESSION['book_create'] = 'Book created successfully';
                         header('Location: /books');
                     } else {
-                        echo 'Your file is too big!';
+                        ?>
+                        <script>
+                            alert('Your file is too big');
+                            window.location.href = history.back();
+                        </script>
+                        <?php
                     }
                 } else {
-                    echo 'There was an error uploading your file!';
+                   ?>
+                    <script>
+                        alert('There was an error uploading your file');
+                        window.location.href = history.back();
+                    </script>
+                    <?php
                 }
             } else {
-                echo 'You cannot upload files of this type!';
+                ?>
+                <script>
+                    alert('Plese all the fields');
+                    window.location.href = history.back();
+                </script>
+                <?php
             }
+        }else{
+            ?>
+            <script>
+                alert('Please fill all the fields');
+                window.location.href = history.back();
+            </script>
+            <?php
         }
     }
 
     public function update_book() {
-        if(isset($_POST['title']) && isset($_POST['description']) && isset($_POST['text']) && isset($_POST['author_id']) && isset($_POST['genre_id'])) {
+        if(isset($_POST['title']) && isset($_POST['description']) && isset($_POST['text'])) {
+            $img = $_FILES['img'];
             $data = [
                 'title' => htmlspecialchars($_POST['title']),
                 'description' => htmlspecialchars($_POST['description']),
                 'text' => htmlspecialchars($_POST['text']),
                 'author_id' => $_POST['author_id'],
-                'genre_id' => $_POST['genre_id']
+                'genre_id' => $_POST['genre_id'],
+                'img' => $_POST['img']?"uploads/". $_FILES['img']['name']:''
             ];
 
-            Book::update($_GET['id'], $data);
+            if(!empty($img)){
+                //save image to folder
+                $imgName = $img['name'];
+                $imgTmp = $img['tmp_name'];
+                $imgSize = $img['size'];
+                $imgError = $img['error'];
+                $imgExt = explode('.', $imgName);
+                $imgActualExt = strtolower(end($imgExt));
+                $allowed = ['jpg', 'jpeg', 'png'];
+
+                if(in_array($imgActualExt, $allowed)) {
+                    if($imgError === 0) {
+                        if($imgSize < 1000000) {
+                            $imgNameNew = uniqid('', true) . "." . $imgActualExt;
+                            $imgDestination = 'uploads/' . $imgNameNew;
+                            move_uploaded_file($imgTmp, $imgDestination);
+                            $data['img'] = $imgDestination;
+                        } else {
+                            ?>
+                            <script>
+                                alert('Your file is too big');
+                                window.location.href = history.back();
+                            </script>
+                            <?php
+                        }
+                    } else {
+                        ?>
+                        <script>
+                            alert('There was an error uploading your file');
+                            window.location.href = history.back();
+                        </script>
+                        <?php
+                    }
+                } else {
+                    ?>
+                    <script>
+                        alert('Plese all the fields');
+                        window.location.href = history.back();
+                    </script>
+                    <?php
+                }
+            }
+
+            Book::update($_POST['id'], $data);
+
+            $_SESSION['book_update'] = 'Book updated successfully';
+            header('Location: /books');
         }
     }
 
@@ -159,6 +236,13 @@ class CategoryController extends BaseController {
             ]);
             $_SESSION['genre_create'] = 'Genre created successfully';
             header('Location: /genres');
+        }else{
+            ?>
+            <script>
+                alert('Please fill all the fields');
+                window.location.href  = history.back();
+            </script>
+            <?php
         }
     }
 
@@ -170,6 +254,12 @@ class CategoryController extends BaseController {
             ];
 
             Genre::update($_GET['id'], $data);
+            ?>
+            <script>
+                alert('Genre updated successfully');
+                window.location.href = '/genres';
+            </script>
+            <?php
         }
     }
 

@@ -1,3 +1,25 @@
+<?php
+    use App\Models\Genre\Genre;
+    $genres = Genre::getAll();
+
+    //count the number of books for each genre
+    $sql = "
+        SELECT 
+            genres.id AS genre_id,
+            genres.name AS genre_name,
+            COUNT(books.id) AS book_count
+        FROM 
+            genres
+        LEFT JOIN 
+            books ON genres.id = books.genre_id
+        GROUP BY 
+            genres.id
+    ";
+
+    $genres = Genre::query($sql);
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,19 +56,27 @@
 
     <div class="container my-5">
         <h2 class="text-center mb-4">Genres and Book Count</h2>
-        
+        <a href="/genre_create" class='btn btn-primary'>Add Genre</a>
+        <br><br>
         <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>Genre</th>
                     <th>Number of Books</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Fiction</td>
-                    <td>10</td>
-                </tr>
+                <?php foreach($genres as $genre): ?>
+                    <tr>
+                        <td><?= $genre['genre_name'] ?></td>
+                        <td><?= $genre['book_count'] ?></td>
+                        <td>
+                            <a href="/genre_edit?id=<?= $genre['genre_id'] ?>" class='btn btn-primary'>Edit</a>
+                            <a href="/delete_genre?id=<?= $genre['genre_id'] ?>" class='btn btn-danger'>Delete</a> 
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
             </tbody>
         </table>
     </div>

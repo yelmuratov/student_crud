@@ -1,3 +1,47 @@
+<?php
+    use App\Models\Genre\Genre;
+    use App\Models\Book\Book;
+    // get the most amount of books in a genre with image and limit to 3
+    $sql = "
+        SELECT 
+            genres.id AS genre_id,
+            genres.name AS genre_name,
+            COUNT(books.id) AS book_count
+        FROM 
+            genres
+        LEFT JOIN 
+            books ON genres.id = books.genre_id
+        GROUP BY 
+            genres.id
+        ORDER BY 
+            book_count DESC
+        LIMIT 3
+    ";
+
+    $genres = Genre::query($sql);
+
+    // best seller books
+
+    // get the most amount of books in a genre with image and limit to 3
+    $sql = "
+        SELECT 
+            books.id AS book_id,
+            books.title AS book_title,
+            authors.name AS author_name
+        FROM 
+            books
+        INNER JOIN 
+            authors ON books.author_id = authors.id
+        ORDER BY 
+            books.id DESC
+        LIMIT 3
+    ";
+
+    $best_sellers = Book::query($sql);
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,36 +88,19 @@
     <div class="container my-5">
         <h2 class="text-center mb-4">Popular Categories</h2>
         <div class="row">
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/300" class="card-img-top" alt="Fiction">
-                    <div class="card-body">
-                        <h5 class="card-title">Fiction</h5>
-                        <p class="card-text">Explore top fiction books from various genres and authors.</p>
-                        <a href="#" class="btn btn-primary">View Fiction</a>
+            <?php foreach($genres as $genre): ?>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card">
+                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="<?= $genre['genre_name'] ?>">
+                        <div class="card-body">
+                            <h5 class="card-title
+                            "><?= $genre['genre_name'] ?></h5>
+                            <p class="card-text"><?= $genre['book_count'] ?> Books</p>
+                            <a href="/books" class="btn btn-primary">View Books</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/300" class="card-img-top" alt="Science">
-                    <div class="card-body">
-                        <h5 class="card-title">Science</h5>
-                        <p class="card-text">Dive into the latest scientific discoveries and research.</p>
-                        <a href="#" class="btn btn-primary">View Science</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/300" class="card-img-top" alt="History">
-                    <div class="card-body">
-                        <h5 class="card-title">History</h5>
-                        <p class="card-text">Uncover the past with insightful historical books.</p>
-                        <a href="#" class="btn btn-primary">View History</a>
-                    </div>
-                </div>
-            </div>
+            <?php endforeach; ?>
         </div>
     </div>
 
@@ -81,27 +108,18 @@
     <div class="container my-5">
         <h2 class="text-center mb-4">Best Sellers</h2>
         <div class="row">
-            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="Best Seller 1">
-                    <div class="card-body">
-                        <h5 class="card-title">Book Title 1</h5>
-                        <p class="card-text">Author 1</p>
-                        <a href="#" class="btn btn-secondary">Details</a>
+            <?php foreach($best_sellers as $book): ?>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card">
+                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="<?= $book['book_title'] ?>">
+                        <div class="card-body">
+                            <h5 class="card-title"><?= $book['book_title'] ?></h5>
+                            <p class="card-text">By <?= $book['author_name'] ?></p>
+                            <a href="/books" class="btn btn-primary">View Book</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="Best Seller 2">
-                    <div class="card-body">
-                        <h5 class="card-title">Book Title 2</h5>
-                        <p class="card-text">Author 2</p>
-                        <a href="#" class="btn btn-secondary">Details</a>
-                    </div>
-                </div>
-            </div>
-            <!-- Add more best sellers similarly -->
+            <?php endforeach; ?>
         </div>
     </div>
 

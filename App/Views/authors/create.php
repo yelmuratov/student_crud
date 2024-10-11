@@ -9,26 +9,18 @@
 <body>
     <div class="container mt-4">
     <a href="/categories" class='btn btn-primary'>Back</a>
-    <h1>Category create</h1>
-    <?php
-        if(isset($_SESSION['category_create'])){
-            echo "<div class='alert alert-success'>".$_SESSION['category_create']."</div>";
-            unset($_SESSION['category_create']);
-        }
-    ?>
-    <form action="/create_ct" id="myForm" method="post">
+    <h1>Author create</h1>
+    <form action="/save_author" id="myForm" method="post">
         <div>
-            <label for="name">Name</label>
+            <label for="name">Author full name</label>
             <input type="text" class='form-control' name="name" id="name">
+        </div>
+        <div>
+            <label for="name">Bio</label>
+            <input type="text" class='form-control' name="bio" id="name">
         </div>
         <button type="submit" class='btn btn-primary mt-4'>Create</button>
     </form>
     </div>
 </body>
-
-<script>
-    function clearForm() {
-        document.getElementById('myForm').reset(); // Clear the form
-    }
-</script>
 </html>

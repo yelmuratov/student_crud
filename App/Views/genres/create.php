@@ -8,18 +8,16 @@
 </head>
 <body>
     <div class="container mt-4">
-    <a href="/categories" class='btn btn-primary'>Back</a>
-    <h1>Category create</h1>
-    <?php
-        if(isset($_SESSION['category_create'])){
-            echo "<div class='alert alert-success'>".$_SESSION['category_create']."</div>";
-            unset($_SESSION['category_create']);
-        }
-    ?>
-    <form action="/create_ct" id="myForm" method="post">
+    <a href="/genres" class='btn btn-primary'>Back</a>
+    <h1>Genre create</h1>
+    <form action="/save_genre" id="myForm" method="post">
         <div>
-            <label for="name">Name</label>
+            <label for="name">Genre</label>
             <input type="text" class='form-control' name="name" id="name">
+        </div>
+        <div>
+            <label for="name">Description</label>
+            <input type="text" class='form-control' name="description" id="name">
         </div>
         <button type="submit" class='btn btn-primary mt-4'>Create</button>
     </form>
