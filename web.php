@@ -1,6 +1,7 @@
 <?php
     use App\Routes\Route;
     use App\Controllers\CategoryController;
+    use App\Controllers\AuthController;
 
     Route::get('/',[CategoryController::class,'index']);
 
@@ -28,5 +29,11 @@
     Route::post('/update_genre',[CategoryController::class,'update_genre']);
     Route::get('/delete_genre',[CategoryController::class,'delete_genre']);
 
+    //Auth
+    Route::get('/login',[AuthController::class,'login']);
+    Route::post('/login_user',[AuthController::class,'login_user']);
+    Route::get('/register',[AuthController::class,'register']);
+    Route::post('/register_user',[AuthController::class,'register_user']);
+    Route::get('/logout',[AuthController::class,'logout']);
 
 ?>

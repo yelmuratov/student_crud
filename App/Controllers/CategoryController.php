@@ -269,5 +269,7 @@ class CategoryController extends BaseController {
         $_SESSION['genre_delete'] = 'Genre deleted successfully';
         header('Location: /genres');
     }   
-    }   
+
+}
+
 ?>
