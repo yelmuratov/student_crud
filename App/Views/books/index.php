@@ -2,6 +2,7 @@
     use App\Models\Book\Book;
     use App\Models\Author\Author;
     use App\Models\Genre\Genre;
+    use App\Models\User\User;
     
     $sql = "
     SELECT 
@@ -17,7 +18,6 @@
     INNER JOIN 
         genres ON books.genre_id = genres.id
 ";
-
     $books = Book::query($sql);
     $authors = Author::getAll();
     $genres = Genre::getAll();
@@ -74,7 +74,13 @@
 
     <div class="container my-5">
         <!-- Book List with Edit/Delete -->
-        <a href="/book_create" class='btn btn-primary'>Add Book</a>
+        <?php
+            if(isset($_SESSION['user'])){
+                if($_SESSION['user'][0]['role'] == 'admin') {
+                    echo "<a href='/book_create' class='btn btn-primary'>Add Book</a>";
+                }
+            }
+        ?>
         <div class="mt-5">
             <h3>Books List</h3>
             <table class="table table-bordered">
@@ -84,7 +90,10 @@
                         <th>Description</th>
                         <th>Genre</th>
                         <th>Author</th>
-                        <th>Actions</th>
+                        <!-- only admin -->
+                         <?php if(isset($_SESSION['user']) && $_SESSION['user'][0]['role'] == 'admin'): ?>
+                            <th>Actions</th>
+                        <?php endif; ?>
                     </tr>
                 </thead>
                 <tbody>
@@ -94,10 +103,13 @@
                             <td><?= $book['book_description'] ?></td>
                             <td><?= $book['author_name'] ?></td>
                             <td><?= $book['genre_name'] ?></td>
-                            <td>
-                                <a href="/book_edit?id=<?= $book['book_id'] ?>" class="btn btn-primary">Edit</a>
-                                <a href="/delete_book?id=<?= $book['book_id'] ?>" class="btn btn-danger">Delete</a>
-                            </td>
+                            <!-- only admin -->
+                            <?php if(isset($_SESSION['user']) && $_SESSION['user'][0]['role'] == 'admin'): ?>
+                                <td>
+                                    <a href="/book_edit?id=<?= $book['book_id'] ?>" class='btn btn-primary'>Edit</a>
+                                    <a href="/book_delete?id=<?= $book['book_id'] ?>" class='btn btn-danger'>Delete</a>
+                                </td>
+                            <?php endif; ?>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

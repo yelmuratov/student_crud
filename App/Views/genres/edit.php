@@ -1,4 +1,14 @@
 <?php
+
+    if(!isset($_SESSION['user'])) {
+        ?>
+        <script>
+            alert('You are not authorized to view this page');
+            window.location.href = '/login';
+        </script>
+        <?php
+    }
+
     use App\Models\Genre\Genre;
     $id = $_GET['id'];
     $genre = Genre::find($id);
@@ -13,7 +23,7 @@
 </head>
 <body>
     <div class="container mt-4">
-        <a href="/categories" class='btn btn-primary'>Back</a>
+        <a href="/genres" class='btn btn-primary'>Back</a>
         <h1>Edit Genre</h1>
         <form action="/update_genre?id=<?= $genre['id'] ?>" method="post" id="editForm">
             <div>

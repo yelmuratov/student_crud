@@ -37,9 +37,7 @@
         LIMIT 3
     ";
 
-    $best_sellers = Book::query($sql);
-
-
+    $best_sellers = Book::query($sql);  
 ?>
 
 <!DOCTYPE html>

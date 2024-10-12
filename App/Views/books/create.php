@@ -5,6 +5,17 @@
     $authors = Author::getAll();
     $genres = Genre::getAll();
 
+    if($_SESSION['user'][0]['role'] != 'admin') {
+        ?>
+        <script>
+            alert('You are not authorized to create book');
+            window.location.href = '/books';
+        </script>
+        <?php
+    }
+
+
+
 ?>
 
 <!DOCTYPE html>

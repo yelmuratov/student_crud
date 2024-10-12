@@ -229,18 +229,27 @@ class CategoryController extends BaseController {
     }
 
     public function save_genre() {
-        if(isset($_POST['name']) && !empty($_POST['description'])) {
-            Genre::create([
-                'name' => htmlspecialchars($_POST['name']),
-                'description' => htmlspecialchars($_POST['description'])
-            ]);
-            $_SESSION['genre_create'] = 'Genre created successfully';
-            header('Location: /genres');
+        if($_SESSION['user'][0]['role'] == 'admin') {
+            if(isset($_POST['name']) && !empty($_POST['description'])) {
+                Genre::create([
+                    'name' => htmlspecialchars($_POST['name']),
+                    'description' => htmlspecialchars($_POST['description'])
+                ]);
+                $_SESSION['genre_create'] = 'Genre created successfully';
+                header('Location: /genres');
+            }else{
+                ?>
+                <script>
+                    alert('Please fill all the fields');
+                    window.location.href  = history.back();
+                </script>
+                <?php
+            }
         }else{
             ?>
             <script>
-                alert('Please fill all the fields');
-                window.location.href  = history.back();
+                alert('You are not authorized to create genre');
+                window.location.href = '/genres';
             </script>
             <?php
         }

@@ -1,3 +1,14 @@
+<?php
+    if(!isset($_SESSION['user'])) {
+        ?>
+        <script>
+            alert('You are not authorized to access this page');
+            window.location.href = '/login';
+        </script>
+        <?php
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

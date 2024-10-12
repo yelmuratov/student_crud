@@ -73,13 +73,21 @@
     <div class="container my-5">
         <h2 class="text-center mb-4">Authors and their Books</h2>
         <!-- Add author -->
-        <a href="/author_create" class='btn btn-primary mb-4'>Add Author</a>
+        <?php   
+            if(isset($_SESSION['user'])) {
+                echo "<a href='/author_add' class='btn btn-primary mb-3'>Add Author</a>";
+            }
+        ?>
         <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>Author</th>
                     <th>Number of Books</th>
-                    <th>Action</th>
+                    <?php
+                        if(isset($_SESSION['user'])) {
+                            echo "<th>Action</th>";
+                        }
+                    ?>
                 </tr>
             </thead>
             <tbody>
@@ -87,10 +95,14 @@
                     <tr>
                         <td><?= $author['author_name'] ?></td>
                         <td><?= $author['book_count'] ?></td>
-                        <td>
-                            <a href="/author_edit?id=<?= $author['author_id'] ?>" class='btn btn-warning'>Edit</a>
-                            <a href="/delete_author?id=<?= $author['author_id'] ?>" class='btn btn-danger'>Delete</a>
-                        </td>
+                        <?php
+                            if(isset($_SESSION['user'])) {
+                                echo "<td>
+                                    <a href='/author_edit?id={$author['author_id']}' class='btn btn-primary'>Edit</a>
+                                    <a href='/delete_author?id={$author['author_id']}' class='btn btn-danger'>Delete</a>
+                                </td>";
+                            }
+                        ?>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

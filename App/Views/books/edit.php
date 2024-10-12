@@ -2,6 +2,15 @@
     use App\Models\Book\Book;
     $id = $_GET['id'];
     $book = Book::find($id);
+
+    if($_SESSION['user'][0]['role'] != 'admin') {
+        ?>
+        <script>
+            alert('You are not authorized to view this page');
+            window.location.href = '/login';
+        </script>
+        <?php
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +22,7 @@
 </head>
 <body>
     <div class="container mt-4">
-        <a href="/categories" class='btn btn-primary'>Back</a>
+        <a href="/books" class='btn btn-primary'>Back</a>
         <h1>Edit Book</h1>
         <form action="/update_book?id=<?= $book['id'] ?>" method="post" id="editForm">
             <!-- hidded input for id -->

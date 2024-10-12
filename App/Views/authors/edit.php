@@ -1,4 +1,12 @@
 <?php
+    if(!isset($_SESSION['user'])) {
+        ?>
+        <script>
+            alert('You are not authorized to view this page');
+            window.location.href = '/login';
+        </script>
+        <?php
+    }
     use App\Models\Author\Author;
     $id = $_GET['id'];
     $student = Author::find($id);
@@ -13,7 +21,7 @@
 </head>
 <body>
     <div class="container mt-4">
-        <a href="/categories" class='btn btn-primary'>Back</a>
+        <a href="/genres" class='btn btn-primary'>Back</a>
         <h1>Edit Author</h1>
         <form action="/update_author?id=<?= $student['id'] ?>" method="post" id="editForm">
             <div>

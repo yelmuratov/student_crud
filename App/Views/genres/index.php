@@ -69,14 +69,22 @@
 
     <div class="container my-5">
         <h2 class="text-center mb-4">Genres and Book Count</h2>
-        <a href="/genre_create" class='btn btn-primary'>Add Genre</a>
+        <?php
+            if(isset($_SESSION['user'])) {
+                echo "<a href='/genre_create' class='btn btn-primary'>Add Genre</a>";
+            }
+        ?>
         <br><br>
         <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>Genre</th>
                     <th>Number of Books</th>
-                    <th>Action</th>
+                    <?php
+                        if(isset($_SESSION['user'])) {
+                            echo "<th>Actions</th>";
+                        }
+                    ?>
                 </tr>
             </thead>
             <tbody>
@@ -84,10 +92,11 @@
                     <tr>
                         <td><?= $genre['genre_name'] ?></td>
                         <td><?= $genre['book_count'] ?></td>
-                        <td>
-                            <a href="/genre_edit?id=<?= $genre['genre_id'] ?>" class='btn btn-primary'>Edit</a>
-                            <a href="/delete_genre?id=<?= $genre['genre_id'] ?>" class='btn btn-danger'>Delete</a> 
-                        </td>
+                        <?php
+                            if(isset($_SESSION['user'])) {
+                                echo "<td><a href='/genre_edit?id={$genre['genre_id']}' class='btn btn-primary'>Edit</a> <a href='/genre_delete?id={$genre['genre_id']}' class='btn btn-danger'>Delete</a></td>";
+                            }
+                        ?>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

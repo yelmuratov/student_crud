@@ -1,3 +1,14 @@
+<?php
+    if(!isset($_SESSION['user'])) {
+        ?>
+        <script>
+            alert('You are not authorized to create genre');
+            window.location.href = '/genres';
+        </script>
+        <?php
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
