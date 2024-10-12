@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 11, 2024 at 01:52 PM
+-- Generation Time: Oct 12, 2024 at 09:05 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -39,7 +39,7 @@ CREATE TABLE `authors` (
 --
 
 INSERT INTO `authors` (`id`, `name`, `bio`, `created_at`) VALUES
-(1, 'J.K. Rowling', 'Author of the Harry Potter series', '2024-10-11 02:54:48'),
+(1, 'J.K. Rowling ', 'Author of the Harry Potter series', '2024-10-11 02:54:48'),
 (2, 'George R.R. Martin', 'Author of A Song of Ice and Fire', '2024-10-11 02:54:48'),
 (3, 'J.R.R. Tolkien', 'Author of The Lord of the Rings', '2024-10-11 02:54:48');
 
@@ -68,7 +68,7 @@ INSERT INTO `books` (`id`, `title`, `description`, `text`, `img`, `author_id`, `
 (7, 'Harry Potter and the Sorcerer\'s Stone', 'The first book in the Harry Potter series', 'Sample text', 'hp1.jpg', 1, 1, '2024-10-11 10:55:35'),
 (8, 'A Game of Thrones', 'The first book in A Song of Ice and Fire series', 'Sample text', 'got1.jpg', 2, 1, '2024-10-11 10:55:35'),
 (9, 'The Fellowship of the Ring', 'The first book in The Lord of the Rings series', 'Sample text', 'lotr1.jpg', 3, 1, '2024-10-11 10:55:35'),
-(10, 'The Winds of Winter', 'Upcoming book in A Song of Ice and Fire', 'Sample text', 'wow.jpg', 2, 2, '2024-10-11 10:55:35');
+(10, 'The Winds of Winter ', 'Upcoming book in A Song of Ice and Fire', 'Sample text', '', 2, 2, '2024-10-11 10:55:35');
 
 -- --------------------------------------------------------
 
@@ -88,9 +88,32 @@ CREATE TABLE `genres` (
 --
 
 INSERT INTO `genres` (`id`, `name`, `description`, `created_at`) VALUES
-(1, 'Fantasy ', 'Fantasy books with magical elements', '2024-10-11 02:54:48'),
+(1, 'Fantasy  ', 'Fantasy books with magical elements', '2024-10-11 02:54:48'),
 (2, 'Science Fiction', 'Books about futuristic technology', '2024-10-11 02:54:48'),
 (3, 'Adventure ', 'Books that feature thrilling journeys', '2024-10-11 02:54:48');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role` enum('user','admin') DEFAULT 'user',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `created_at`, `updated_at`) VALUES
+(1, 'Salimbay', 'admin@gmail.com', '$2y$10$YjVg/611N0HyqyKzfFqLCev/PQb2/AfVRRq4PKOVxvye1Yhsh2th6', 'admin', '2024-10-12 06:03:13', '2024-10-12 06:36:15');
 
 --
 -- Indexes for dumped tables
@@ -117,6 +140,14 @@ ALTER TABLE `genres`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -124,19 +155,25 @@ ALTER TABLE `genres`
 -- AUTO_INCREMENT for table `authors`
 --
 ALTER TABLE `authors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `books`
 --
 ALTER TABLE `books`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `genres`
 --
 ALTER TABLE `genres`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
